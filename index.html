@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BankerSim | Banker's Algorithm Simulator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon">B</span>
+                <span>Banker<span class="logo-highlight">Sim</span></span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#simulator">Simulator</a>
+                <a href="#results">Results</a>
+                <a href="#about">About</a>
+            </div>
+
+            
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">OPERATING SYSTEMS TOOL</span>
+
+            <h1>Banker's Algorithm<br>
+                <span>Simulator</span>
+            </h1>
+
+            <p>
+                Understand resource allocation, prevent deadlocks,
+                and visualize safe sequences with an interactive simulator.
+            </p>
+
+            <a href="#simulator" class="hero-button">
+                Start Simulation <span>→</span>
+            </a>
+        </div>
+
+        <div class="hero-visual">
+            <div class="visual-card">
+                <div class="visual-top">
+                    <span class="visual-dot"></span>
+                    <span class="visual-dot"></span>
+                    <span class="visual-dot"></span>
+                    <span class="visual-label">SYSTEM OVERVIEW</span>
+                </div>
+
+                <div class="visual-number">P0 → P1 → P2</div>
+                <div class="visual-line"></div>
+
+                <div class="visual-items">
+                    <div><span class="mini-dot green"></span> Safe State</div>
+                    <div><span class="mini-dot blue"></span> Resource Allocation</div>
+                    <div><span class="mini-dot purple"></span> Process Execution</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container" id="simulator">
+
+        <!-- SECTION HEADING -->
+        <div class="section-heading">
+            <div>
+                <span class="section-tag">SIMULATION WORKSPACE</span>
+                <h2>System Configuration</h2>
+                <p>Configure your processes and resources to begin.</p>
+            </div>
+
+            <span class="step-label">STEP 01</span>
+        </div>
+
+        <!-- CONFIGURATION -->
+        <section class="card configuration-card">
+
+            <div class="card-heading">
+                <div class="heading-icon blue-icon">⚙</div>
+                <div>
+                    <h3>System Parameters</h3>
+                    <p>Define the number of processes and resources.</p>
+                </div>
+            </div>
+
+            <div class="config-grid">
+
+                <div class="form-group">
+                    <label for="processCount">Number of Processes</label>
+                    <input type="number" id="processCount"
+                           min="1" max="10" value="5">
+                    <small>Maximum 10 processes</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="resourceCount">Number of Resources</label>
+                    <input type="number" id="resourceCount"
+                           min="1" max="5" value="3">
+                    <small>Maximum 5 resource types</small>
+                </div>
+
+            </div>
+
+            <div class="config-actions">
+                <button class="btn btn-primary" id="generateBtn">
+                    Generate Input Tables
+                </button>
+
+                <button class="btn btn-outline" id="exampleBtn">
+                    ✦ Load Example
+                </button>
+            </div>
+
+        </section>
+
+        <!-- INPUT METHODS -->
+        <section class="card">
+
+            <div class="card-heading">
+                <div class="heading-icon purple-icon">☷</div>
+                <div>
+                    <h3>Choose Input Method</h3>
+                    <p>Select which resource information you want to enter.</p>
+                </div>
+            </div>
+
+            <div class="method-grid">
+
+                <div class="method-box">
+                    <label for="matrixMode">Matrix Information</label>
+
+                    <select id="matrixMode">
+                        <option value="maximum">Enter Maximum Matrix</option>
+                        <option value="need">Enter Need Matrix</option>
+                    </select>
+
+                    <p id="matrixDescription">
+                        Need = Maximum − Allocation
+                    </p>
+                </div>
+
+                <div class="method-box">
+                    <label for="resourceMode">Available Resource Information</label>
+
+                    <select id="resourceMode">
+                        <option value="available">Enter Available Resources</option>
+                        <option value="total">Enter Total Resources</option>
+                    </select>
+
+                    <p id="resourceDescription">
+                        Work starts with Available resources.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- INPUT MATRICES -->
+        <section class="card">
+
+            <div class="section-heading compact-heading">
+                <div>
+                    <span class="section-tag">STEP 02</span>
+                    <h2>Resource Matrices</h2>
+                    <p>Enter the resource allocation details.</p>
+                </div>
+            </div>
+
+            <div class="matrix-grid">
+
+                <div class="matrix-card">
+                    <div class="matrix-title">
+                        <h3>Allocation Matrix</h3>
+                        <span class="matrix-badge">A</span>
+                    </div>
+                    <p>Currently allocated resources for each process.</p>
+                    <div class="table-scroll" id="allocationTable"></div>
+                </div>
+
+                <div class="matrix-card">
+                    <div class="matrix-title">
+                        <h3 id="secondTableTitle">Maximum Matrix</h3>
+                        <span class="matrix-badge purple-badge">B</span>
+                    </div>
+                    <p id="secondTableDescription">
+                        Maximum resources required by each process.
+                    </p>
+                    <div class="table-scroll" id="secondTable"></div>
+                </div>
+
+            </div>
+
+            <div class="matrix-card resource-card">
+                <div class="matrix-title">
+                    <h3 id="resourceTableTitle">Available Resources</h3>
+                    <span class="matrix-badge cyan-badge">C</span>
+                </div>
+                <p id="resourceTableDescription">
+                    Currently available instances of each resource.
+                </p>
+                <div class="table-scroll" id="resourceTable"></div>
+            </div>
+
+            <div class="calculation-actions">
+                <button class="btn btn-primary calculate-btn" id="calculateBtn">
+                    ▶ Calculate Safety State
+                </button>
+
+                <button class="btn btn-light" id="resetBtn">
+                    Reset All
+                </button>
+            </div>
+
+            <div id="errorMessage" class="error-message" role="alert"></div>
+
+        </section>
+
+        <!-- RESULTS -->
+        <section class="results-section" id="results">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-tag">STEP 03</span>
+                    <h2>Simulation Results</h2>
+                    <p>View the calculated Need matrix and safety sequence.</p>
+                </div>
+            </div>
+
+            <div class="result-status" id="systemStatus">
+                <span class="status-indicator"></span>
+                <span id="statusText">Waiting for simulation</span>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span class="stat-label">Total Processes</span>
+                    <strong id="totalProcesses">0</strong>
+                    <span class="stat-icon">▦</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">Completed Processes</span>
+                    <strong id="completedCount">0</strong>
+                    <span class="stat-icon">✓</span>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">System State</span>
+                    <strong id="stateValue">—</strong>
+                    <span class="stat-icon">◈</span>
+                </div>
+
+            </div>
+
+            <div class="card result-card">
+                <div class="card-heading">
+                    <div class="heading-icon purple-icon">▤</div>
+                    <div>
+                        <h3>Need Matrix</h3>
+                        <p>Remaining resources required by each process.</p>
+                    </div>
+                </div>
+
+                <div class="table-scroll" id="needTable">
+                    <p class="empty-result">Results will appear here.</p>
+                </div>
+            </div>
+
+            <div class="card result-card">
+                <div class="card-heading">
+                    <div class="heading-icon cyan-icon">◉</div>
+                    <div>
+                        <h3>Available Resources</h3>
+                        <p>Initial available resource instances.</p>
+                    </div>
+                </div>
+
+                <div id="availableResult" class="available-display">
+                    —
+                </div>
+            </div>
+
+            <div class="card result-card">
+                <div class="card-heading">
+                    <div class="heading-icon green-icon">✓</div>
+                    <div>
+                        <h3>Safe Sequence</h3>
+                        <p>Order in which processes can safely complete.</p>
+                    </div>
+                </div>
+
+                <div id="sequenceResult" class="sequence-display">
+                    <p class="empty-result">Run the simulation to see the sequence.</p>
+                </div>
+            </div>
+
+            <div class="card result-card">
+                <div class="card-heading">
+                    <div class="heading-icon blue-icon">▥</div>
+                    <div>
+                        <h3>Execution Details</h3>
+                        <p>Step-by-step Work and Finish values.</p>
+                    </div>
+                </div>
+
+                <div class="table-scroll" id="executionTable">
+                    <p class="empty-result">Execution details will appear here.</p>
+                </div>
+            </div>
+
+            <button class="btn btn-outline download-btn" id="downloadBtn">
+                ↓ Download Simulation Report
+            </button>
+
+        </section>
+
+
+    </main>
+
+    <footer>
+        <div class="footer-logo">Banker<span>Sim</span></div>
+        <p>A smarter way to understand resource allocation and deadlock avoidance.r</p>
+       
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
